@@ -1,0 +1,43 @@
+import tkinter as tk
+# Importation de la bibliothèque Tkinter, qui permet de créer des interfaces graphiques (GUI) en Python.
+
+# Créer la fenêtre principale
+root = tk.Tk()
+# On crée une instance de la classe Tk(), qui représente la fenêtre principale de l'application.
+root.title("Exemple Tkinter")
+# On définit le titre de la fenêtre principale, qui apparaîtra dans la barre de titre.
+root.geometry("400x300")
+# On fixe la taille de la fenêtre à 400 pixels de largeur et 300 pixels de hauteur.
+
+# Ajouter des widgets
+label = tk.Label(root, text="Bonjour, Tkinter !")
+# Création d'un widget Label (étiquette) pour afficher du texte. 
+# Le paramètre `text` contient le texte à afficher et `root` indique que ce widget appartient à la fenêtre principale.
+label.pack()
+# La méthode `pack()` place le widget dans la fenêtre de façon automatique (centrée et empilée verticalement).
+
+entry = tk.Entry(root)
+# Création d'un widget Entry, qui permet à l'utilisateur de saisir du texte.
+# Ce champ de saisie appartient également à la fenêtre principale (`root`).
+entry.pack()
+# On utilise `pack()` pour positionner le champ de saisie sous le label.
+
+# Fonction pour afficher le texte saisi
+def afficher_texte():
+    # Définition d'une fonction qui sera appelée lorsqu'on clique sur le bouton.
+    # Cette fonction récupère le texte saisi dans le champ `entry` et l'affiche dans la console.
+    print("Texte entré :", entry.get())
+    # La méthode `entry.get()` retourne le contenu du champ de saisie.
+
+button = tk.Button(root, text="Afficher le texte", command=afficher_texte)
+# Création d'un widget Button (bouton). 
+# Le paramètre `text` définit le texte affiché sur le bouton.
+# Le paramètre `command` indique que la fonction `afficher_texte` doit être exécutée lorsqu'on clique sur le bouton.
+button.pack()
+# La méthode `pack()` positionne le bouton sous le champ de saisie.
+
+# Lancer la boucle principale
+root.mainloop()
+# La méthode `mainloop()` démarre la boucle principale de l'application Tkinter.
+# Cette boucle écoute les événements (clics, saisies, etc.) et met à jour l'interface en conséquence.
+# Sans cette ligne, la fenêtre ne s'afficherait pas.
