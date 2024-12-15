@@ -1,3 +1,28 @@
+# Création d'une pile vide
+stack = []
+
+# Empiler des éléments
+stack.append(10)  # Ajoute 10 en haut de la pile
+stack.append(20)  # Ajoute 20
+stack.append(30)  # Ajoute 30
+
+print("Pile après empilement:", stack)  # Affiche [10, 20, 30]
+
+# Dépiler des éléments
+top = stack.pop()  # Retire 30 (le dernier élément)
+print("Élément dépilé:", top)  # Affiche 30
+print("Pile après dépilement:", stack)  # Affiche [10, 20]
+
+# Vérifier l'élément en haut de la pile sans le retirer
+top = stack[-1]
+print("Élément au sommet:", top)  # Affiche 20
+
+# Vérifier si la pile est vide
+is_empty = len(stack) == 0
+print("La pile est-elle vide ?", is_empty)  # Affiche False
+
+======================================
+
 """
 Fichier: dynamic_queue.py
 Description: Implémentation d'une file par chaînage dynamique en Python.
