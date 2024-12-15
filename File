@@ -1,0 +1,130 @@
+"""
+Fichier: dynamic_queue.py
+Description: Implémentation d'une file par chaînage dynamique en Python.
+"""
+"""
+enqueue(data) : Ajoute un élément à la fin de la file.
+dequeue() : Retire et retourne l'élément en tête de la file.
+peek() : Retourne l'élément en tête sans le retirer.
+is_empty() : Vérifie si la file est vide.
+get_size() : Retourne la taille de la file.
+display() : Retourne une liste des éléments dans l'ordre de la file (utile pour visualiser).
+"""
+
+class Node:
+    """
+    Classe représentant un nœud dans la file.
+
+    Attributes:
+        data (any): La donnée stockée dans le nœud.
+        next (Node): Une référence vers le nœud suivant dans la file.
+    """
+    def __init__(self, data):
+        """
+        Initialise un nœud avec une donnée et un pointeur vers le suivant.
+
+        Args:
+            data (any): La donnée stockée dans le nœud.
+        """
+        self.data = data
+        self.next = None
+
+
+class Queue:
+    """
+    Classe représentant une file par chaînage dynamique.
+    """
+
+    def __init__(self):
+        """
+        Initialise une file vide.
+        """
+        self.front = None  # Référence au premier élément (tête)
+        self.rear = None   # Référence au dernier élément (queue)
+        self.size = 0      # Nombre d'éléments dans la file
+
+    def is_empty(self):
+        """
+        Vérifie si la file est vide.
+
+        Returns:
+            bool: True si la file est vide, False sinon.
+        """
+        return self.front is None
+
+    def enqueue(self, data):
+        """
+        Ajoute un élément à la fin de la file.
+
+        Args:
+            data (any): La donnée à ajouter.
+        """
+        new_node = Node(data)
+        if self.is_empty():
+            # Si la file est vide, le nouvel élément devient tête et queue
+            self.front = self.rear = new_node
+        else:
+            # Sinon, on l'ajoute après le dernier élément
+            self.rear.next = new_node
+            self.rear = new_node
+        self.size += 1
+
+    def dequeue(self):
+        """
+        Retire et retourne l'élément en tête de la file.
+
+        Returns:
+            any: La donnée retirée de la file.
+        
+        Raises:
+            Exception: Si la file est vide.
+        """
+        if self.is_empty():
+            raise Exception("File vide : impossible de retirer un élément.")
+        
+        data = self.front.data  # Sauvegarde la donnée du premier nœud
+        self.front = self.front.next  # Avance le pointeur de tête
+
+        if self.front is None:
+            # Si la file devient vide, on met aussi à jour le pointeur de queue
+            self.rear = None
+
+        self.size -= 1
+        return data
+
+    def peek(self):
+        """
+        Retourne l'élément en tête de la file sans le retirer.
+
+        Returns:
+            any: La donnée en tête de la file.
+
+        Raises:
+            Exception: Si la file est vide.
+        """
+        if self.is_empty():
+            raise Exception("File vide : impossible d'accéder à un élément.")
+        return self.front.data
+
+    def get_size(self):
+        """
+        Retourne le nombre d'éléments dans la file.
+
+        Returns:
+            int: Le nombre d'éléments dans la file.
+        """
+        return self.size
+
+    def display(self):
+        """
+        Affiche le contenu de la file.
+
+        Returns:
+            list: Une liste contenant les éléments de la file.
+        """
+        elements = []
+        current = self.front
+        while current is not None:
+            elements.append(current.data)
+            current = current.next
+        return elements
