@@ -41,3 +41,101 @@ root.mainloop()
 # La méthode `mainloop()` démarre la boucle principale de l'application Tkinter.
 # Cette boucle écoute les événements (clics, saisies, etc.) et met à jour l'interface en conséquence.
 # Sans cette ligne, la fenêtre ne s'afficherait pas.
+
+=============================== Principal fonctionnalité
+
+import tkinter as tk
+import random
+from tkinter import messagebox
+
+# Créer la fenêtre principale
+root = tk.Tk()
+root.title("Jeu : Attrape le carré")
+root.geometry("600x400")
+# Fixe les dimensions de la fenêtre
+
+# Variables globales pour gérer le score et le temps restant
+score = 0
+temps_restant = 30  # Le jeu dure 30 secondes
+
+# Canvas pour dessiner le carré (aire de jeu)
+canvas = tk.Canvas(root, width=600, height=300, bg="lightblue")
+canvas.pack()
+# Un canvas est utilisé pour dessiner des formes comme des carrés, des cercles, etc.
+
+# Zone d'informations
+info_frame = tk.Frame(root)
+info_frame.pack(pady=10)
+# Un Frame permet de regrouper plusieurs widgets pour les organiser.
+
+# Widget d'affichage du score
+score_label = tk.Label(info_frame, text=f"Score : {score}", font=("Helvetica", 14))
+score_label.pack(side="left", padx=20)
+# Utilisation d'un Label pour afficher le score
+
+# Widget d'affichage du temps restant
+temps_label = tk.Label(info_frame, text=f"Temps restant : {temps_restant}s", font=("Helvetica", 14))
+temps_label.pack(side="right", padx=20)
+
+# Fonction pour générer un carré aléatoire
+def generer_carre():
+    canvas.delete("all")  # Supprime tout ce qui est sur le canvas
+    x1 = random.randint(50, 550)
+    y1 = random.randint(50, 250)
+    x2 = x1 + 50
+    y2 = y1 + 50
+    # Génère des coordonnées aléatoires pour un carré
+    canvas.create_rectangle(x1, y1, x2, y2, fill="red", tags="carre")
+    # Dessine un carré rouge sur le canvas avec le tag "carre"
+
+# Fonction appelée lorsqu'on clique sur le carré
+def cliquer_sur_carre(event):
+    global score
+    # Vérifie si l'utilisateur a cliqué sur un objet avec le tag "carre"
+    item = canvas.find_withtag("current")
+    if "carre" in canvas.gettags(item):
+        score += 1  # Augmente le score
+        score_label.config(text=f"Score : {score}")
+        generer_carre()  # Génère un nouveau carré
+
+# Associe un clic gauche sur le canvas à la fonction `cliquer_sur_carre`
+canvas.bind("<Button-1>", cliquer_sur_carre)
+
+# Fonction pour gérer le compte à rebours
+def mise_a_jour_temps():
+    global temps_restant
+    if temps_restant > 0:
+        temps_restant -= 1  # Réduit le temps restant
+        temps_label.config(text=f"Temps restant : {temps_restant}s")
+        root.after(1000, mise_a_jour_temps)  # Appelle cette fonction toutes les secondes
+    else:
+        fin_du_jeu()  # Termine le jeu si le temps est écoulé
+
+# Fonction pour afficher la fin du jeu
+def fin_du_jeu():
+    canvas.delete("all")  # Supprime tout sur le canvas
+    messagebox.showinfo("Fin du jeu", f"Temps écoulé ! Votre score final est : {score}")
+    # Affiche une boîte de dialogue avec le score final
+    reset_jeu()
+
+# Fonction pour réinitialiser le jeu
+def reset_jeu():
+    global score, temps_restant
+    score = 0
+    temps_restant = 30
+    score_label.config(text=f"Score : {score}")
+    temps_label.config(text=f"Temps restant : {temps_restant}s")
+    generer_carre()  # Génère un premier carré
+    mise_a_jour_temps()  # Redémarre le compte à rebours
+
+# Bouton pour redémarrer le jeu
+reset_button = tk.Button(root, text="Redémarrer", font=("Helvetica", 14), command=reset_jeu)
+reset_button.pack(pady=10)
+# Un bouton pour redémarrer le jeu manuellement
+
+# Lancer le jeu
+generer_carre()  # Génère un premier carré
+mise_a_jour_temps()  # Lance le compte à rebours
+root.mainloop()
+# Démarre la boucle principale de l'interface graphique
+
